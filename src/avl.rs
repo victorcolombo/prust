@@ -45,13 +45,10 @@ impl<K: Ord> AVL<K> {
 
 impl<K: Ord, V> AVL<K, V> {
     pub fn empty() -> AVL<K, V> {
-        return AVL::Empty;
+        AVL::Empty
     }
     pub fn is_empty(&self) -> bool {
-        match self {
-            AVL::Empty => true,
-            _ => false,
-        }
+        matches!(self, AVL::Empty)
     }
     fn height(&self) -> i64 {
         match self {
@@ -72,7 +69,7 @@ impl<K: Ord, V> AVL<K, V> {
                 value: _,
                 left,
                 right,
-            } => &left.height() - &right.height(),
+            } => left.height() - right.height(),
         }
     }
     pub fn find(&self, target_value: &K) -> Option<&V> {
@@ -118,7 +115,7 @@ impl<K: Ord, V> AVL<K, V> {
                 };
             }
         }
-        return self.clone();
+        self.clone()
     }
     fn right_fix(&self) -> AVL<K, V> {
         if let AVL::Node {
@@ -140,7 +137,7 @@ impl<K: Ord, V> AVL<K, V> {
                 return self.right_rotation();
             }
         }
-        return self.clone();
+        self.clone()
     }
     fn left_rotation(&self) -> AVL<K, V> {
         if let AVL::Node {
@@ -170,7 +167,7 @@ impl<K: Ord, V> AVL<K, V> {
                 };
             }
         }
-        return self.clone();
+        self.clone()
     }
     fn left_fix(&self) -> AVL<K, V> {
         if let AVL::Node {
@@ -192,7 +189,7 @@ impl<K: Ord, V> AVL<K, V> {
                 return self.left_rotation();
             }
         }
-        return self.clone();
+        self.clone()
     }
     fn fix(&self) -> AVL<K, V> {
         match self.diff() {

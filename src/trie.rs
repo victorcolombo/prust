@@ -66,7 +66,7 @@ impl<T: PartialEq + Clone, U> Trie<T, U> {
                 return v.get_store(tail);
             }
         }
-        return Option::None;
+        Option::None
     }
 }
 
@@ -94,7 +94,7 @@ impl<T: PartialEq + Clone, U: PartialEq> Trie<T, U> {
                 return Option::Some(new_trie);
             }
         }
-        return Option::None;
+        Option::None
     }
 }
 
@@ -138,7 +138,7 @@ mod tests {
 
     #[test]
     fn test_trie_persistance() {
-        let vs = vec!["aab", "adc", "acd", "dca"];
+        let vs = ["aab", "adc", "acd", "dca"];
         let snapshots: Vec<_> = vs
             .iter()
             .scan(Trie::empty(), |tree, value| {
@@ -150,7 +150,7 @@ mod tests {
             let found = vs
                 .iter()
                 .map(|s| tree.search(s))
-                .filter(|found| *found == true)
+                .filter(|found| *found)
                 .count();
             assert_eq!(found, index + 1);
         }
@@ -178,7 +178,7 @@ mod tests {
     fn test_trie_deletion() {
         let t = Trie::empty().insert("aab").delete("aab");
         assert!(t.is_some());
-        assert_eq!(t.unwrap().search("aab"), false);
+        assert!(!t.unwrap().search("aab"));
         let t2 = Trie::empty();
         assert!(t2.delete("a").is_none());
     }
@@ -241,12 +241,12 @@ mod tests {
         trie = trie.insert("grape").insert("banana-split");
 
         // Check for words in current trie
-        assert_eq!(trie.search("grape"), true);
+        assert!(trie.search("grape"));
 
         // Restore trie to a previous of moment in time
         trie = snapshot;
 
         // Word was not present at snapshop moment
-        assert_eq!(trie.search("grape"), false);
+        assert!(!trie.search("grape"));
     }
 }
