@@ -27,6 +27,12 @@ impl<K: PartialEq, V> PartialEq for KeyValue<K, V> {
     }
 }
 
+impl<K, V> Default for HashMap<K, V> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl<K, V> HashMap<K, V> {
     pub fn new() -> HashMap<K, V> {
         HashMap {
