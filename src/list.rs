@@ -94,10 +94,10 @@ impl<T> List<T> {
         }
     }
     pub fn empty() -> List<T> {
-        return List {
+        List {
             head: RefCounter::new(ListNode::Empty),
             len: 0,
-        };
+        }
     }
     fn push_front_rc(&self, rc_value: RefCounter<T>) -> List<T> {
         List {
@@ -163,7 +163,7 @@ mod tests {
             .push_front(3)
             .push_front(2)
             .push_front(1);
-        let v = vec![1, 2, 3, 4];
+        let v = [1, 2, 3, 4];
         for (idx, val) in l.iter().enumerate() {
             assert_eq!(v[idx], *val);
         }
