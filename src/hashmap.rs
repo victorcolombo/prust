@@ -8,7 +8,7 @@ use std::{
 use crate::trie::Trie;
 
 #[derive(Clone)]
-pub struct HashMap<K: PartialEq, V = ()> {
+pub struct HashMap<K, V = ()> {
     trie: Trie<bool, KeyValue<K, V>>,
     phantom: PhantomData<K>,
 }
@@ -27,10 +27,18 @@ impl<K: PartialEq, V> PartialEq for KeyValue<K, V> {
     }
 }
 
-pub fn empty<K: PartialEq, V>() -> HashMap<K, V> {
-    HashMap {
-        trie: Trie::empty_store(),
-        phantom: PhantomData,
+impl<K, V> Default for HashMap<K, V> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl<K, V> HashMap<K, V> {
+    pub fn new() -> HashMap<K, V> {
+        HashMap {
+            trie: Trie::empty_store(),
+            phantom: PhantomData,
+        }
     }
 }
 
@@ -89,7 +97,7 @@ mod tests {
 
     #[test]
     fn insert_and_retrieve_values_set() {
-        let m1 = empty();
+        let m1 = HashMap::new();
         let m2 = m1.insert(1238).insert(-1).insert(1238);
         assert!(m2.search(&1238));
         assert!(!m1.search(&-1));
@@ -98,7 +106,7 @@ mod tests {
 
     #[test]
     fn insert_and_retrieve_values() {
-        let m1 = empty();
+        let m1 = HashMap::new();
         let m2 = m1.put(1238, 1).put(-1, 10);
         assert_eq!(m2.get(&1238), Some(&1));
         assert_eq!(m1.get(&-1), None);
@@ -115,7 +123,7 @@ mod tests {
             fn hash<H: Hasher>(&self, _: &mut H) {}
         }
 
-        let m = empty().put(K { x: 1 }, 1).put(K { x: -1 }, 10);
+        let m = HashMap::new().put(K { x: 1 }, 1).put(K { x: -1 }, 10);
         assert_eq!(m.get(&K { x: 1 }), Some(&1));
         assert_eq!(m.get(&K { x: -1 }), Some(&10));
     }
@@ -131,7 +139,7 @@ mod tests {
             fn hash<H: Hasher>(&self, _: &mut H) {}
         }
 
-        let m = empty()
+        let m = HashMap::new()
             .put(K { x: 1 }, 1)
             .put(K { x: -1 }, 10)
             .delete(K { x: 1 });
