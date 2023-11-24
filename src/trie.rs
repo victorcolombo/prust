@@ -13,7 +13,7 @@ impl<T: Clone, U> Clone for Trie<T, U> {
     }
 }
 
-impl<T: PartialEq + Clone, U> Trie<T, U> {
+impl<T, U> Trie<T, U> {
     pub(crate) fn empty_store() -> Trie<T, U> {
         Trie {
             stored_value: Vec::new(),
@@ -26,6 +26,9 @@ impl<T: PartialEq + Clone, U> Trie<T, U> {
             adjecent_nodes: Vec::new(),
         }
     }
+}
+
+impl<T: PartialEq + Clone, U> Trie<T, U> {
     pub fn insert_store<Slc: AsRef<[T]>>(&self, value: Slc, store: U) -> Self {
         let value_ref = value.as_ref();
         let mut new_trie = self.clone();
