@@ -8,7 +8,7 @@ use std::{
 use crate::trie::Trie;
 
 #[derive(Clone)]
-pub struct HashMap<K: PartialEq, V = ()> {
+pub struct HashMap<K, V = ()> {
     trie: Trie<bool, KeyValue<K, V>>,
     phantom: PhantomData<K>,
 }
